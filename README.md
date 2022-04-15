@@ -1,1 +1,2 @@
 # yFsm
+a simple fsm
