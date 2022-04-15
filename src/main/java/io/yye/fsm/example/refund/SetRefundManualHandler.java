@@ -1,13 +1,10 @@
 package io.yye.fsm.example.refund;
 
-import io.yye.fsm.DefaultModel;
-import io.yye.fsm.DefaultState;
-
 import java.util.function.Function;
 
-public class SetRefundManualHandler implements Function<DefaultModel, DefaultState> {
+public class SetRefundManualHandler implements Function<RefundModel, RefundState> {
     @Override
-    public DefaultState apply(DefaultModel defaultModel) {
-        return RefundStateMachine.REFUND_MANUAL_FROM_ABNORMAL;
+    public RefundState apply(RefundModel refundModel) {
+        return RefundState.REFUND_MANUAL_FROM_ABNORMAL;
     }
 }
