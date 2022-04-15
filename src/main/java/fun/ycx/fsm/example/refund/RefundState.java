@@ -1,6 +1,6 @@
-package io.yye.fsm.example.refund;
+package fun.ycx.fsm.example.refund;
 
-import io.yye.fsm.IState;
+import fun.ycx.fsm.IState;
 
 public enum RefundState implements IState {
     INIT,
@@ -25,7 +25,6 @@ public enum RefundState implements IState {
     }
 
     private final boolean finalState;
-    ;
 
     @Override
     public String getState() {

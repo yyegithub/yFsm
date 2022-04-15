@@ -1,4 +1,4 @@
-package io.yye.fsm.example.refund;
+package fun.ycx.fsm.example.refund;
 
 import java.util.function.Function;
 

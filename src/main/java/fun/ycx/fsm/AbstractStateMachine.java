@@ -1,4 +1,6 @@
-package io.yye.fsm;
+package fun.ycx.fsm;
+
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -11,12 +13,13 @@ import java.util.Map;
  * @param <EVENT> 事件类型
  * @param <MODEL> 模型类型
  */
+@Slf4j
 public abstract class AbstractStateMachine<STATE extends IState, EVENT extends IEvent, MODEL extends IModel<STATE>> {
     private final Map<STATE, Map<EVENT, StateTransition<STATE, EVENT, MODEL>>> stateTransitionMap = new HashMap<>();
 
     /**
      * 初始化方法
-     * @param stateTransitionMap
+     * @param stateTransitionMap 流转规则map
      */
     public void initStateTransitions(Map<STATE, Map<EVENT, StateTransition<STATE, EVENT, MODEL>>> stateTransitionMap) {
         this.stateTransitionMap.clear();
@@ -25,7 +28,7 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
 
     /**
      * 初始化方法
-     * @param stateTransitions
+     * @param stateTransitions 流转规则list
      */
     public void initStateTransitions(List<StateTransition<STATE, EVENT, MODEL>> stateTransitions) {
         this.stateTransitionMap.clear();
@@ -124,7 +127,7 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
      * @return 校验是否通过
      */
     public boolean checkParam(EVENT event, MODEL model) {
-        System.out.println("checkParam"+event+model);
+        log.debug("checkParam"+event+model);
         return true;
     }
 
@@ -134,7 +137,7 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
      * @param model 模型
      */
     public void beforeTransition(EVENT event, MODEL model) {
-        System.out.println("before transition"+event+model);
+        log.debug("before transition"+event+model);
     }
 
     /**
@@ -143,7 +146,7 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
      * @param model 模型
      */
     public void postTransition(EVENT event, MODEL model) {
-        System.out.println("post transition"+event+model);
+        log.debug("post transition"+event+model);
     }
 
     /**
@@ -159,7 +162,7 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
      * @param entity 要保存的模型实体
      */
     protected void saveOrUpdateModelStateEntity(ModelStateEntity entity) {
-        System.out.println("save or update model "+entity);
+        log.debug("save or update model "+entity);
     }
 
     /**
@@ -167,6 +170,6 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
      * @param entity 要保存的迁移日志实体
      */
     protected void saveStateLogEntity(StateLogEntity entity) {
-        System.out.println("save state log "+entity);
+        log.debug("save state log "+entity);
     }
 }

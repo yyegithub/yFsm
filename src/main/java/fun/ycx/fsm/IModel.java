@@ -1,4 +1,4 @@
-package io.yye.fsm;
+package fun.ycx.fsm;
 
 /**
  * 模型接口

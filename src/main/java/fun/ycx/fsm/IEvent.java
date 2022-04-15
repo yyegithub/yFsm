@@ -1,4 +1,4 @@
-package io.yye.fsm;
+package fun.ycx.fsm;
 
 /**
  * 事件接口

@@ -1,12 +1,12 @@
-package io.yye.fsm.example.refund;
+package fun.ycx.fsm.example.refund;
 
-import io.yye.fsm.*;
+import fun.ycx.fsm.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.yye.fsm.example.refund.RefundState.*;
-import static io.yye.fsm.example.refund.RefundEvent.*;
+import static fun.ycx.fsm.example.refund.RefundState.*;
+import static fun.ycx.fsm.example.refund.RefundEvent.*;
 
 public class RefundStateMachine extends AbstractStateMachine<RefundState, RefundEvent, RefundModel> {
     public RefundStateMachine() {

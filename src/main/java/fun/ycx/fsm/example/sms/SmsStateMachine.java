@@ -1,6 +1,6 @@
-package io.yye.fsm.example.sms;
+package fun.ycx.fsm.example.sms;
 
-import io.yye.fsm.*;
+import fun.ycx.fsm.*;
 
 import java.util.ArrayList;
 import java.util.List;

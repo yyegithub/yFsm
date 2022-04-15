@@ -1,6 +1,6 @@
-package io.yye.fsm.example.refund;
+package fun.ycx.fsm.example.refund;
 
-import io.yye.fsm.IEvent;
+import fun.ycx.fsm.IEvent;
 
 public enum RefundEvent implements IEvent {
     REFUND_BEFORE,

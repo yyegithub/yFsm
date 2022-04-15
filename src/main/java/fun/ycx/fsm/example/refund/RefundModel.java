@@ -1,6 +1,6 @@
-package io.yye.fsm.example.refund;
+package fun.ycx.fsm.example.refund;
 
-import io.yye.fsm.IModel;
+import fun.ycx.fsm.IModel;
 import lombok.Data;
 
 @Data

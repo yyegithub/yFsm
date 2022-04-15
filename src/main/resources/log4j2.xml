@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <!-- 控制台输出日志样式 -->
+        <Property name="CONSOLE_LOG_PATTERN">
+            %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
+        </Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
+                <Charset>UTF-8</Charset>
+            </PatternLayout>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <AsyncLogger name="fun.ycx" level="debug">
+            <AppenderRef ref="Console"/>
+        </AsyncLogger>
+        <Root level="error">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>
