@@ -2,6 +2,7 @@ package fun.ycx.fsm;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.management.modelmbean.ModelMBean;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -75,33 +76,40 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
             throw new FinalStateException(model.getState());
         }
 
-        beforeTransition(event, model);
+        try {
+            if (tryLock(model)) {
+                beforeTransition(event, model);
 
-        StateTransition<STATE, EVENT, MODEL> matchingStateTransition = getStateTransition(model, event);
-        STATE nextState = matchingStateTransition.toNextState(model);
+                StateTransition<STATE, EVENT, MODEL> matchingStateTransition = getStateTransition(model, event);
+                STATE nextState = matchingStateTransition.toNextState(model);
+                model.setState(nextState);
 
-        postTransition(event, model);
+                postTransition(event, model);
 
-        ModelStateEntity modelStateEntity = new ModelStateEntity();
-        modelStateEntity.setModel(model.getModel());
-        modelStateEntity.setModelId(model.getModelId());
-        modelStateEntity.setState(nextState.getState());
+                ModelStateEntity modelStateEntity = new ModelStateEntity();
+                modelStateEntity.setModel(model.getModel());
+                modelStateEntity.setModelId(model.getModelId());
+                modelStateEntity.setState(nextState.getState());
 
-        saveOrUpdateModelStateEntity(modelStateEntity);
+                saveOrUpdateModelStateEntity(modelStateEntity);
 
-        StateLogEntity stateLogEntity = new StateLogEntity();
-        stateLogEntity.setModel(model.getModel());
-        stateLogEntity.setModelId(model.getModelId());
-        stateLogEntity.setFromState(model.getState().getState());
-        stateLogEntity.setTargetState(nextState.getState());
-        stateLogEntity.setEvent(event.getEvent());
-        stateLogEntity.setExt(model.getExt());
-        stateLogEntity.setEventTime(LocalDateTime.now());
-        saveStateLogEntity(stateLogEntity);
+                StateLogEntity stateLogEntity = new StateLogEntity();
+                stateLogEntity.setModel(model.getModel());
+                stateLogEntity.setModelId(model.getModelId());
+                stateLogEntity.setFromState(model.getState().getState());
+                stateLogEntity.setTargetState(nextState.getState());
+                stateLogEntity.setEvent(event.getEvent());
+                stateLogEntity.setExt(model.getExt());
+                stateLogEntity.setEventTime(LocalDateTime.now());
+                saveStateLogEntity(stateLogEntity);
 
-        model.setState(nextState);
-
-        return model;
+                return model;
+            } else {
+                throw new IllegalStateException("failed when try to lock " + model);
+            }
+        } finally {
+            releaseLock(model);
+        }
     }
 
     /**
@@ -171,5 +179,22 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
      */
     protected void saveStateLogEntity(StateLogEntity entity) {
         log.debug("save state log "+entity);
+    }
+
+    /**
+     * 针对model加锁， 可自定义分布式锁
+     * @param model 模型
+     * @return 加锁结果
+     */
+    protected boolean tryLock(MODEL model) {
+        return true;
+    }
+
+    /**
+     * 释放锁
+     * @param model 模型
+     */
+    protected void releaseLock(MODEL model) {
+
     }
 }
