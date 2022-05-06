@@ -1,6 +1,7 @@
 package fun.ycx.fsm.example.refund;
 
 import fun.ycx.fsm.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 import static fun.ycx.fsm.example.refund.RefundState.*;
 import static fun.ycx.fsm.example.refund.RefundEvent.*;
 
+@Slf4j
 public class RefundStateMachine extends AbstractStateMachine<RefundState, RefundEvent, RefundModel> {
     public RefundStateMachine() {
         List<StateTransition<RefundState, RefundEvent, RefundModel>> stateTransitions = new ArrayList<>();
@@ -30,11 +32,23 @@ public class RefundStateMachine extends AbstractStateMachine<RefundState, Refund
 
         RefundStateMachine refundStateMachine = new RefundStateMachine();
 
+        log.debug("start transition with REFUND_BEFORE");
         refundStateMachine.doTransition(REFUND_BEFORE, refundModel);
-        refundStateMachine.doTransition(REFUND, refundModel);
-        refundStateMachine.doTransition(REFUND_NOTIFY, refundModel);
-        refundStateMachine.doTransition(SET_REFUND_MANUAL, refundModel);
+        Thread.sleep(1000L);
 
+        log.debug("start transition with REFUND");
+        refundStateMachine.doTransition(REFUND, refundModel);
+        Thread.sleep(1000L);
+
+        log.debug("start transition with REFUND_NOTIFY");
+        refundStateMachine.doTransition(REFUND_NOTIFY, refundModel);
+        Thread.sleep(1000L);
+
+        log.debug("start transition with SET_REFUND_MANUAL");
+        refundStateMachine.doTransition(SET_REFUND_MANUAL, refundModel);
+        Thread.sleep(1000L);
+
+        log.debug("start transition with SET_REFUND_MANUAL");
         refundStateMachine.doTransition(SET_REFUND_MANUAL, refundModel);// will throw FinalStateException
     }
 }
