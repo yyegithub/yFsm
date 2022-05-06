@@ -5,6 +5,7 @@ import java.util.function.Function;
 public class SetRefundManualHandler implements Function<RefundModel, RefundState> {
     @Override
     public RefundState apply(RefundModel refundModel) {
-        return RefundState.REFUND_MANUAL_FROM_ABNORMAL;
+        //return RefundState.REFUND_MANUAL_FROM_ABNORMAL;
+        return RefundState.REFUND_SUCCESS_FROM_ABNORMAL; // will throw InvalidStateException
     }
 }

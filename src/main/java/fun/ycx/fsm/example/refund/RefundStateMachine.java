@@ -12,10 +12,10 @@ public class RefundStateMachine extends AbstractStateMachine<RefundState, Refund
     public RefundStateMachine() {
         List<StateTransition<RefundState, RefundEvent, RefundModel>> stateTransitions = new ArrayList<>();
 
-        stateTransitions.add(new StateTransition<>(INIT, REFUND_BEFORE, m -> REFUND_WAIT));
-        stateTransitions.add(new StateTransition<>(REFUND_WAIT, REFUND, new RefundHandler()));
-        stateTransitions.add(new StateTransition<>(REFUND_APPLIED, REFUND_NOTIFY, new RefundNotifyHandler()));
-        stateTransitions.add(new StateTransition<>(REFUND_ABNORMAL, SET_REFUND_MANUAL, new SetRefundManualHandler()));
+        stateTransitions.add(new StateTransition<>(INIT, REFUND_BEFORE, m -> REFUND_WAIT, REFUND_WAIT));
+        stateTransitions.add(new StateTransition<>(REFUND_WAIT, REFUND, new RefundHandler(), REFUND_APPLIED,REFUND_SUCCESS,REFUND_PEND,REFUND_FAIL));
+        stateTransitions.add(new StateTransition<>(REFUND_APPLIED, REFUND_NOTIFY, new RefundNotifyHandler(), REFUND_SUCCESS,REFUND_PEND,REFUND_FAIL,REFUND_ABNORMAL));
+        stateTransitions.add(new StateTransition<>(REFUND_ABNORMAL, SET_REFUND_MANUAL, new SetRefundManualHandler(), REFUND_MANUAL_FROM_ABNORMAL));
 
         initStateTransitions(stateTransitions);
     }

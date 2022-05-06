@@ -1,8 +1,10 @@
 package fun.ycx.fsm;
 
+import fun.ycx.fsm.exceptions.FinalStateException;
+import fun.ycx.fsm.exceptions.InvalidStateException;
+import fun.ycx.fsm.exceptions.NextStateNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.management.modelmbean.ModelMBean;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +53,7 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
      * @throws FinalStateException 模型状态为终态时抛出
      * @throws NextStateNotFoundException 根据模型当前状态及事件，没有对应的状态迁移处理对象时抛出
      */
-    public MODEL doTransition(EVENT event, String model, String modelId) throws FinalStateException, NextStateNotFoundException  {
+    public MODEL doTransition(EVENT event, String model, String modelId) throws FinalStateException, NextStateNotFoundException, InvalidStateException  {
         MODEL m = getModel(model, modelId);
         return doTransition(event, m);
     }
@@ -64,7 +66,7 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
      * @throws FinalStateException 模型状态为终态时抛出
      * @throws NextStateNotFoundException 根据模型当前状态及事件，没有对应的状态迁移处理对象时抛出
      */
-    public MODEL doTransition(EVENT event, MODEL model) throws FinalStateException, NextStateNotFoundException {
+    public MODEL doTransition(EVENT event, MODEL model) throws FinalStateException, NextStateNotFoundException, InvalidStateException {
         if(stateTransitionMap.size()<1) {
             throw new IllegalStateException("stateTransitionMap must be init first");
         }
@@ -135,7 +137,9 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
      * @return 校验是否通过
      */
     public boolean checkParam(EVENT event, MODEL model) {
-        log.debug("checkParam"+event+model);
+        if (log.isDebugEnabled()) {
+            log.debug("checkParam"+event+model);
+        }
         return true;
     }
 
@@ -145,7 +149,9 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
      * @param model 模型
      */
     public void beforeTransition(EVENT event, MODEL model) {
-        log.debug("before transition"+event+model);
+        if (log.isDebugEnabled()) {
+            log.debug("before transition"+event+model);
+        }
     }
 
     /**
@@ -154,7 +160,9 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
      * @param model 模型
      */
     public void postTransition(EVENT event, MODEL model) {
-        log.debug("post transition"+event+model);
+        if (log.isDebugEnabled()) {
+            log.debug("post transition"+event+model);
+        }
     }
 
     /**
@@ -170,7 +178,9 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
      * @param entity 要保存的模型实体
      */
     protected void saveOrUpdateModelStateEntity(ModelStateEntity entity) {
-        log.debug("save or update model "+entity);
+        if (log.isDebugEnabled()) {
+            log.debug("save or update model "+entity);
+        }
     }
 
     /**
@@ -178,7 +188,9 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
      * @param entity 要保存的迁移日志实体
      */
     protected void saveStateLogEntity(StateLogEntity entity) {
-        log.debug("save state log "+entity);
+        if (log.isDebugEnabled()) {
+            log.debug("save state log "+entity);
+        }
     }
 
     /**
@@ -187,6 +199,9 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
      * @return 加锁结果
      */
     protected boolean tryLock(MODEL model) {
+        if(log.isDebugEnabled()) {
+            log.debug("try to lock with " + model);
+        }
         return true;
     }
 
@@ -195,6 +210,8 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
      * @param model 模型
      */
     protected void releaseLock(MODEL model) {
-
+        if(log.isDebugEnabled()) {
+            log.debug("release lock with " + model);
+        }
     }
 }

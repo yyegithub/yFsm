@@ -1,5 +1,6 @@
-package fun.ycx.fsm;
+package fun.ycx.fsm.exceptions;
 
+import fun.ycx.fsm.IState;
 import lombok.Getter;
 
 @Getter
