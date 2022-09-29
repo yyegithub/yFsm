@@ -88,12 +88,7 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
 
                 postTransition(event, model);
 
-                ModelStateEntity modelStateEntity = new ModelStateEntity();
-                modelStateEntity.setModel(model.getModel());
-                modelStateEntity.setModelId(model.getModelId());
-                modelStateEntity.setState(nextState.getState());
-
-                saveOrUpdateModelStateEntity(modelStateEntity);
+                saveOrUpdateModel(model);
 
                 StateLogEntity stateLogEntity = new StateLogEntity();
                 stateLogEntity.setModel(model.getModel());
@@ -174,12 +169,12 @@ public abstract class AbstractStateMachine<STATE extends IState, EVENT extends I
     public abstract MODEL getModel(String model, String modelId);
 
     /**
-     * 模型实体保存方法，子类根据选定的持久化方案重载
-     * @param entity 要保存的模型实体
+     * 模型保存方法，子类根据选定的持久化方案重载
+     * @param model 要保存的模型
      */
-    protected void saveOrUpdateModelStateEntity(ModelStateEntity entity) {
+    protected void saveOrUpdateModel(MODEL model) {
         if (log.isDebugEnabled()) {
-            log.debug("save or update model "+entity);
+            log.debug("save or update model "+model);
         }
     }
 
